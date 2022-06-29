@@ -11,6 +11,7 @@ use rusty_audio::Audio;
 
 use rust_game_space_invaders::{frame, render};
 use rust_game_space_invaders::frame::{Drawable, new_frame};
+use rust_game_space_invaders::invaders::Invaders;
 use rust_game_space_invaders::player::Player;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -52,6 +53,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Game Loop
     let mut player = Player::new();
     let mut instant = Instant::now();
+    let mut invaders = Invaders::new();
 
     'gameloop: loop {
         // Per-frame init
@@ -80,9 +82,15 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         // Updates
         player.update(delta);
+        if invaders.update(delta) {
+            audio.play("move");
+        }
 
         // Draw & Render
-        player.draw(&mut curr_frame);
+        let drawables: Vec<&dyn Drawable> = vec![&player, &invaders];
+        for drawable in drawables {
+            drawable.draw(&mut curr_frame);
+        }
         let _ = render_tx.send(curr_frame); // let _ ignores errors suring startup
         thread::sleep(Duration::from_millis(1));
     }
