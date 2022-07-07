@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut audio = Audio::new();
 
     audio.add("explode", "explode.wav");
-    audio.add("lose", "lose.wav");
+    audio.add("loose", "loose.wav");
     audio.add("move", "move.wav");
     audio.add("pew", "pew.wav");
     audio.add("startup", "startup.wav");
