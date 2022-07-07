@@ -58,7 +58,7 @@ impl Invaders {
                 }
             }
             if downwards {
-                let new_duration = max(self.move_timer.duration.as_millis() - 250, 250);
+                let new_duration = max(self.move_timer.duration.as_millis() - 250, 250); //accelerate aliens
                 self.move_timer = Timer::from_millis(new_duration as u64);
                 for invader in self.army.iter_mut() {
                     invader.y += 1;
@@ -70,8 +70,24 @@ impl Invaders {
             }
             return true;
         }
-
         false
+    }
+    pub fn all_killed(&self) -> bool {
+        self.army.is_empty()
+    }
+    pub fn reached_bottom(&self) -> bool {
+        self.army.iter().map(|invader| invader.y).max().unwrap_or(0) >= NUM_ROWS - 1
+    }
+    pub fn kill_invader(&mut self, x: usize, y: usize) -> bool {
+        if let Some(idx) = self
+            .army
+            .iter()
+            .position(|invader| (invader.x == x) && (invader.y == y)) {
+            self.army.remove(idx);
+            true
+        } else {
+            false
+        }
     }
 }
 
