@@ -72,7 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         }
                     }
                     KeyCode::Esc | KeyCode::Char('q') => {
-                        audio.play("lose");
+                        audio.play("loose");
                         break 'gameloop;
                     }
                     _ => {}
